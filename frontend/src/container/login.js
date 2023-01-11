@@ -181,6 +181,9 @@ const Login = (props) => {
         </Form.Item>
       </Form>
     </div>
+    <div className='page-login-timestemp'>
+      <Button onClick={() => navigate('/users-timestemps')}>To List All Users Time Duration</Button>
+    </div>
     <Footer style={{ textAlign: 'center' }}>Test PT. Lautan Natural Krimerindo ©2023 Created by Reky Senjaya</Footer>
   </Layout>
   );

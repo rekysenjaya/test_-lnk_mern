@@ -96,6 +96,26 @@ export const signupAction = (data) => {
   };
 };
 
+export const getTimestempAll = () => {
+  return (dispatch) => {
+
+    dispatch(storeUpdate({ timestampLoading: true }))
+    axios
+      .get(Config.API_URL + 'users/timestamp-user')
+      .then((response) => {
+        if (response.data.success) {
+          dispatch(storeUpdate({ timestampLoading: false, timestampData: response.data.data || [] }))
+        } else {
+          dispatch(storeUpdate({ timestampLoading: false }))
+        }
+      })
+      .catch((error) => {
+        console.log(error, '===errro');
+        dispatch(storeUpdate({ timestampLoading: false }))
+      });
+  }
+}
+
 export const storeUpdate = (data) => ({
   type: actionTypes.AUTH_STORE,
   data

@@ -10,6 +10,7 @@ import * as actionAuth from './actions/actionAuth';
 import Calculator from "./container/calculator";
 import Home, { Loading } from "./container/home";
 import Login from "./container/login";
+import TimestempPage from "./container/timestemp";
 
 const router = (authStatus) => createBrowserRouter([
   {
@@ -21,6 +22,10 @@ const router = (authStatus) => createBrowserRouter([
         element: <Calculator />,
       },
     ]
+  },
+  {
+    path: "/users-timestemps",
+    element: <TimestempPage />
   }
 ]);
 

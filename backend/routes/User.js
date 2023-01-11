@@ -66,6 +66,16 @@ router.get('/timestamp', async function (req, res, next) {
   }
 });
 
+router.get('/timestamp-user', async function (req, res, next) {
+  try {
+    const timestamp = await Timestamp.find().populate('executor','username name')
+    res.json(new Response(timestamp))
+  } catch (e) {
+    console.log(e)
+    res.send(e)
+  }
+});
+
 router.post('/signin', async function (req, res, next) {
   try {
     const { username, password } = req.body
