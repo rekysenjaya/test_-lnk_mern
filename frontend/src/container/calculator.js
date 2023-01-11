@@ -6,7 +6,7 @@ import Display from '../components/Display';
 import Buttons from '../components/Buttons';
 import Button from '../components/Button';
 
-import { Breadcrumb, Layout } from 'antd';
+import { Breadcrumb, Layout, Button as ButtonAntd } from 'antd';
 
 const { Content } = Layout;
 
@@ -62,9 +62,10 @@ const Calculator = () => {
     let result = state.operations.join('')
     if (result) {
       result = evaluate(result)
-      result = format(result, { precision: 14 })
       updateState({
         operations: [result],
+        showButtonWord: true,
+        wordsText: ''
       })
     }
   }
@@ -80,6 +81,7 @@ const Calculator = () => {
       case 'clear':
         updateState({
           operations: [],
+          showButtonWord: false
         })
         break
       case 'equal':
@@ -91,6 +93,7 @@ const Calculator = () => {
         })
         updateState({
           operations: newOperations,
+          showButtonWord: false
         })
         break
     }
@@ -107,6 +110,7 @@ const Calculator = () => {
         case 'Escape':
           updateState({
             operations: [],
+            showButtonWord: false
           })
           break
         case 'Backspace':
@@ -114,6 +118,7 @@ const Calculator = () => {
           backSpaceOperations.pop()
           updateState({
             operations: backSpaceOperations,
+            showButtonWord: false
           })
           break
         case '=':
@@ -126,6 +131,7 @@ const Calculator = () => {
           })
           updateState({
             operations: newOperations,
+            showButtonWord: false
           })
           break
       }
@@ -137,6 +143,77 @@ const Calculator = () => {
 
     return () => document.removeEventListener("keydown", onKeyPress)
   })
+
+  const numberToWordsIndonesia = (n, custom_join_character) => {
+    var string = n.toString(), units, tens, scales, start, end, chunks, chunksLen, chunk, ints, i, word, words;
+
+    var and = custom_join_character || '';
+
+    /* Apakah angka nol? */
+    if (parseInt(string) === 0) {
+      return 'nol';
+    }
+    /* Susunan unit sebagai kata */
+    units = ['', 'satu', 'dua', 'tiga', 'empat', 'lima', 'enam', 'tujuh', 'delapan', 'sembilan', 'sepuluh', 'sebelas', 'dua belas', 'tiga belas', 'empat belas', 'lima belas', 'enam belas', 'tujuh belas', 'delapan belas', 'sembilan belas'];
+
+    /* Susunan puluhan sebagai kata */
+    tens = ['', '', 'dua puluh', 'tiga puluh', 'empat puluh', 'lima puluh', 'enam puluh', 'tujuh puluh', 'delapan puluh', 'sembilan puluh'];
+
+    /* Susunan skala sebagai kata */
+    scales = ['', 'ribuan', 'juta', 'miliar', 'triliun', 'kuadriliun', 'kuintiliun', 'sextillion', 'septillion', 'octillion', 'nonillion', 'decillion', 'undecillion', 'duodecillion', 'tredecillion', 'quatttuor-decillion', 'quindecillion', 'sexdecillion', 'septen-decillion', 'octodecillion', 'novemdecillion', 'vigintillion', 'centillion'];
+
+    /* Pisahkan argumen pengguna menjadi 3 digit potongan dari kanan ke kiri */
+    start = string.length;
+    chunks = [];
+    while (start > 0) {
+      end = start;
+      chunks.push(string.slice((start = Math.max(0, start - 3)), end));
+    }
+
+    /* Periksa apakah fungsi memiliki kata skala yang cukup untuk dapat merangkai argumen pengguna */
+    chunksLen = chunks.length;
+    if (chunksLen > scales.length) {
+      return '';
+    }
+
+    /* Merangkai setiap bilangan bulat di setiap potongan */
+    words = [];
+    for (i = 0; i < chunksLen; i++) {
+      chunk = parseInt(chunks[i]);
+      if (chunk) {
+        /* Membagi potongan menjadi array bilangan bulat individual */
+        ints = chunks[i].split('').reverse().map(parseFloat);
+        /* Jika bilangan bulat puluhan adalah 1, yaitu 10, maka tambahkan 10 ke bilangan bulat satuan */
+        if (ints[1] === 1) {
+          ints[0] += 10;
+        }
+        /* Tambahkan kata skala jika potongan bukan nol dan item array ada */
+        if ((word = scales[i])) {
+          words.push(word);
+        }
+        /* Tambahkan kata satuan jika item array ada */
+        if ((word = units[ints[0]])) {
+          words.push(word);
+        }
+        /* Tambahkan puluhan kata jika item array ada */
+        if ((word = tens[ints[1]])) {
+          words.push(word);
+        }
+        /* Tambahkan string '' setelah satuan atau bilangan bulat puluhan jika: */
+        if (ints[0] || ints[1]) {
+          /* Chunk memiliki ratusan integer atau chunk adalah yang pertama dari beberapa chunk */
+          if (ints[2] || !i && chunksLen) {
+            words.push(and);
+          }
+        }
+        /* Tambahkan ratusan kata jika item array ada */
+        if ((word = units[ints[2]])) {
+          words.push(word + ' ratus');
+        }
+      }
+    }
+    return words.reverse().join(' ');
+  }
 
   return (
     <Content style={{ margin: '0 16px' }}>
@@ -159,6 +236,9 @@ const Calculator = () => {
             })}
           </Buttons>
         </div >
+        {state.showButtonWord && <div style={{ marginTop: 20 }}>
+          <div style={{ padding: '10px 0', fontSize: 23, color: 'rgba(0, 0, 0, 0.5)' }}>{numberToWordsIndonesia(state.operations.join(''))}</div>
+        </div>}
       </div>
     </Content>
   );
