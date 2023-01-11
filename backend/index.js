@@ -7,7 +7,7 @@ const port = 3002
 mongoose.set('strictQuery', true)
 
 async function main() {
-  await mongoose.connect('mongodb://127.0.0.1:27017/testlnkdb');
+  await mongoose.connect('mongodb://127.0.0.1:27017/test_lnk_db');
 }
 
 main().catch(err => console.log(err));

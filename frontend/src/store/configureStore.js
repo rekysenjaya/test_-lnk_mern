@@ -8,6 +8,7 @@ import auth from '../reducers/reducerAuth'
 const config = {
   key: 'lnk-storege',
   storage,
+  whitelist: ['auth'],
 }
 
 const rootReducers = combineReducers({

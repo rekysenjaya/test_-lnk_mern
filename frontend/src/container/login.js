@@ -13,8 +13,15 @@ const Login = (props) => {
   const navigate = useNavigate();
   const refForm = useRef(null)
 
-  const { signupStatus, signinStatus } = useSelector(state => state.auth);
+  const { signupStatus, signinStatus, authStatus } = useSelector(state => state.auth);
   const [typeForm, setTypeForm] = useState('login')
+
+  useEffect(() => {
+    if (authStatus === 'success') {
+      navigate(0);
+      dispatch(actionAuth.storeUpdate({ authStatus: null }))
+    }
+  }, [authStatus])
 
   useEffect(() => {
     if (signupStatus) {
@@ -40,7 +47,7 @@ const Login = (props) => {
   useEffect(() => {
     if (signinStatus) {
       if (signinStatus === 'success') {
-        navigate('/')
+        navigate(0)
       } else if (signinStatus === 'error') {
         Modal.warning({
           title: 'You failed to login',
