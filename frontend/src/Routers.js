@@ -1,13 +1,12 @@
 import React from "react";
 import {
   createBrowserRouter,
-  Link,
   RouterProvider,
 } from "react-router-dom";
 
 import Calculator from "./container/calculator";
-
 import Home from "./container/home";
+import Login from "./container/login";
 import Profile from "./container/profile";
 
 const router = createBrowserRouter([
@@ -25,6 +24,10 @@ const router = createBrowserRouter([
       },
     ]
   },
+  {
+    path: "/login",
+    element: <Login />,
+  }
 ]);
 
 function Routers() {

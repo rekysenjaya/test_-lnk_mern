@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { LogoutOutlined, UserOutlined, CalculatorOutlined } from '@ant-design/icons';
 
 import { Layout, Menu, Modal } from 'antd';
-import { Outlet } from 'react-router';
+import { Outlet, useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 
 const { Header, Footer, Sider } = Layout;
@@ -26,16 +26,18 @@ const items = [
 ]
 
 const Home = () => {
+  const navigate = useNavigate();
   const [selectedMenu, setSelectedMenu] = useState('')
   const [collapsed, setCollapsed] = useState(false)
 
   const onClickMenu = (e) => {
-    if (e.key == 'logout') {
+    if (e.key === 'logout') {
       Modal.confirm({
         icon: <LogoutOutlined style={{ color: 'red' }} />,
         content: <div>You sure you want to logout?</div>,
+        okText: 'Yes',
         onOk() {
-          console.log('OK');
+          navigate('/login')
         },
         onCancel() {
           console.log('Cancel');

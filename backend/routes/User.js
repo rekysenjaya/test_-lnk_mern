@@ -16,9 +16,9 @@ router.get('/', async function (req, res, next) {
 
 router.post('/', async function (req, res, next) {
   try {
-    const { email, password, name } = req.body
+    const { username, password, name } = req.body
 
-    const user = await User.create({ email, password, name });
+    const user = await User.create({ username, password, name });
     res.status(201).json(new Response(user))
   } catch (e) {
     console.log(e)
@@ -28,19 +28,19 @@ router.post('/', async function (req, res, next) {
 
 router.post('/signin', async function (req, res, next) {
   try {
-    const { email, password } = req.body
+    const { username, password } = req.body
 
-    const user = await User.findOne({ email })
+    const user = await User.findOne({ username })
     if (!user.comparePassword(password)) {
       return res.json(new Response({ message: "password doesn't match" }, false))
     }
 
     // create token
-    user.token = jwt.sign({ userid: user._id, email: user.email }, secretKey);
+    user.token = jwt.sign({ userid: user._id, username: user.username }, secretKey);
     await user.save()
 
     res.json(new Response({
-      email: user.email,
+      username: user.username,
       name: user.name,
       token: user.token
     }))
