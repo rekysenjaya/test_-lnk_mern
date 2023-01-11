@@ -8,7 +8,7 @@ import * as actionAuth from '../actions/actionAuth';
 
 const { Header, Footer } = Layout;
 
-const Login = (props) => {
+const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const refForm = useRef(null)
@@ -28,8 +28,8 @@ const Login = (props) => {
       if (signupStatus === 'success') {
         Modal.info({
           title: 'You have successfully registered',
+          onOk: () => setTypeForm('login')
         })
-        setTypeForm('login')
       } else if (signupStatus === 'error') {
         Modal.warning({
           title: 'You failed to register',
@@ -41,7 +41,6 @@ const Login = (props) => {
       }
       dispatch(actionAuth.storeUpdate({ signupStatus: null }))
     }
-
   }, [signupStatus])
 
   useEffect(() => {
@@ -59,7 +58,6 @@ const Login = (props) => {
       }
       dispatch(actionAuth.storeUpdate({ signinStatus: null }))
     }
-
   }, [signinStatus])
 
   const compareToFirstPassword = (rule, value, callback) => {
@@ -181,9 +179,9 @@ const Login = (props) => {
         </Form.Item>
       </Form>
     </div>
-    <div className='page-login-timestemp'>
+    {typeForm === 'login' && <div className='page-login-timestemp'>
       <Button onClick={() => navigate('/users-timestemps')}>To List All Users Time Duration</Button>
-    </div>
+    </div>}
     <Footer style={{ textAlign: 'center' }}>Test PT. Lautan Natural Krimerindo ©2023 Created by Reky Senjaya</Footer>
   </Layout>
   );

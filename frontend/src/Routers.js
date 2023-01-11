@@ -12,7 +12,7 @@ import Home, { Loading } from "./container/home";
 import Login from "./container/login";
 import TimestempPage from "./container/timestemp";
 
-const router = (authStatus) => createBrowserRouter([
+const router = authStatus => createBrowserRouter([
   {
     path: "/",
     element: (authStatus === 'success' ? <Home /> : (authStatus === 'loading' ? <Loading /> : <Login />)),

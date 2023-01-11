@@ -1,12 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import update from 'immutability-helper'
-import { evaluate, format } from 'mathjs'
+import { evaluate } from 'mathjs'
 
 import Display from '../components/Display';
 import Buttons from '../components/Buttons';
 import Button from '../components/Button';
 
-import { Breadcrumb, Layout, Button as ButtonAntd } from 'antd';
+import { Breadcrumb, Layout } from 'antd';
 
 const { Content } = Layout;
 
@@ -202,7 +202,7 @@ const Calculator = () => {
         /* Tambahkan string '' setelah satuan atau bilangan bulat puluhan jika: */
         if (ints[0] || ints[1]) {
           /* Chunk memiliki ratusan integer atau chunk adalah yang pertama dari beberapa chunk */
-          if (ints[2] || !i && chunksLen) {
+          if ((ints[2] || !i) && chunksLen) {
             words.push(and);
           }
         }
