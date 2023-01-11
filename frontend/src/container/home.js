@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { LogoutOutlined, HomeOutlined, CalculatorOutlined } from '@ant-design/icons';
 
 import { Breadcrumb, Layout, Menu, Modal, Spin } from 'antd';
@@ -65,7 +65,7 @@ const Home = () => {
     </Sider>
     <Layout className="site-layout">
       <Header style={{ padding: 0, background: '#fff' }} />
-      {location.pathname == '/' ?
+      {location.pathname === '/' ?
         <Content style={{ margin: '0 16px' }}>
           <Breadcrumb style={{ margin: '16px 0' }}>
             <Breadcrumb.Item>Home</Breadcrumb.Item>
